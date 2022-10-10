@@ -13,7 +13,7 @@
     }
 
     attachList() {
-        this.rootElement.insertAdjacentElement('afterbegin', this.sectionElement);
+        this.rootElement.insertAdjacentElement("afterend", this.sectionElement);
         this.sectionElement.querySelector('h2')!.textContent = "Active Projects"
     }
 }

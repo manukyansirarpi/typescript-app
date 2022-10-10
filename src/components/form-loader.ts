@@ -1,4 +1,7 @@
 import * as Validation from '../utils/validation';
+import { Project, ProjectState } from '../store/state';
+import ProjectItem from './project-Item';
+import ProjectList from './project-list';
 
 class FormLoadeer {
 
@@ -10,6 +13,9 @@ class FormLoadeer {
     descriptionElement: HTMLInputElement;
     peopleElement: HTMLInputElement;
 
+
+    projectList: ProjectList
+
     constructor() {
         this.projectFormTemplate = document.getElementById('project-input') as HTMLTemplateElement;
         this.rootElement = document.getElementById('app')! as HTMLDivElement;
@@ -18,6 +24,9 @@ class FormLoadeer {
         this.titleElement = this.formElement.querySelector("#title") as HTMLInputElement;
         this.descriptionElement =  this.formElement.querySelector("#description") as HTMLInputElement;
         this.peopleElement = this.formElement.querySelector("#people") as HTMLInputElement;
+
+
+        this.projectList = new ProjectList();
 
         this.attachForm();
         this.attachListeners();
@@ -72,13 +81,17 @@ class FormLoadeer {
 
             if(Array.isArray(projectData)) {
                 const [title, description, people] = projectData;
+                const newProject = {
+                    title, description, people
+                };
+                ProjectState.getInstance().addProject(newProject);
+                const projectElement = new ProjectItem(newProject);
+                this.projectList.sectionElement.querySelector("ul")!.insertAdjacentElement('afterend', projectElement.projectItemElement);
+                
                 this.clearInputs();
             }
         })
     }
 }
-
-
-
 
 export default FormLoadeer;
